@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2018_08_01_043855) do
     t.string "account_number", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "account_number"], name: "index_accounts_on_user_id_and_account_number", unique: true
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
@@ -56,11 +57,13 @@ ActiveRecord::Schema.define(version: 2018_08_01_043855) do
     t.integer "amount", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["account_id", "currency"], name: "index_wallets_on_account_id_and_currency", unique: true
+    t.index ["account_id", "wallet_number"], name: "index_wallets_on_account_id_and_wallet_number", unique: true
     t.index ["account_id"], name: "index_wallets_on_account_id"
   end
 
   add_foreign_key "accounts", "users", on_delete: :cascade
   add_foreign_key "wallet_transactions", "wallets", column: "wallet_from", on_delete: :cascade
   add_foreign_key "wallet_transactions", "wallets", column: "wallet_to", on_delete: :cascade
-  add_foreign_key "wallets", "wallets", column: "account_id", on_delete: :cascade
+  add_foreign_key "wallets", "accounts", on_delete: :cascade
 end

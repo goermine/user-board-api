@@ -6,5 +6,6 @@ class CreateAccounts < ActiveRecord::Migration[5.2]
       t.foreign_key :users, column: :user_id, on_delete: :cascade
       t.timestamps
     end
+    add_index :accounts, [:user_id, :account_number], unique: true
   end
 end
