@@ -1,0 +1,2 @@
+class Transfer < WalletTransaction
+end

@@ -1,0 +1,2 @@
+class Withdraw < WalletTransaction
+end
