@@ -1,2 +1,0 @@
-class Withdraw < WalletTransaction
-end

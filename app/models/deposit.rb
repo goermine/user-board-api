@@ -1,2 +1,0 @@
-class Deposit < WalletTransaction
-end

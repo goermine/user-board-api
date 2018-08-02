@@ -1,0 +1,23 @@
+version: '2.1'
+services:
+  storehouse-api:
+    build:
+      context: ./user-board-api/.
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3001
+    depends_on:
+      - postgres
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/user_board_api
+
+  postgres:
+    image: postgres:9.6
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
+    driver: local
