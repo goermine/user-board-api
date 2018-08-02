@@ -2,7 +2,7 @@ version: '2.1'
 services:
   storehouse-api:
     build:
-      context: ./user-board-api/.
+      context: ./api/.
       dockerfile: Dockerfile
     ports:
       - 3001:3001
@@ -11,7 +11,7 @@ services:
     tty: true
     stdin_open: true
     volumes:
-      - .:/user_board_api
+      - .:/api
 
   postgres:
     image: postgres:9.6

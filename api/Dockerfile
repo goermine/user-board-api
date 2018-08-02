@@ -1,7 +1,7 @@
 FROM ruby:2.5.1
 
 ENV LANG=C.UTF-8
-ENV INSTALL_PATH /user-board-api
+ENV INSTALL_PATH /api
 
 RUN echo 'deb http://deb.debian.org/debian jessie-backports main' > /etc/apt/sources.list.d/jessie-backports.list
 
