@@ -54,10 +54,4 @@ class WalletTransactionsController < ApplicationController
         render json: { errors: errors }, status: 422
       end.run!
   end
-
-  private
-
-  def transfer_params
-    params.require(:transaction).permit(:wallet_from, :wallet_to, :sum, :charge_method)
-  end
 end
