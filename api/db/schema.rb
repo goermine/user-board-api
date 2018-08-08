@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_01_043855) do
+ActiveRecord::Schema.define(version: 2018_08_08_060819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,21 @@ ActiveRecord::Schema.define(version: 2018_08_01_043855) do
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -34,16 +49,17 @@ ActiveRecord::Schema.define(version: 2018_08_01_043855) do
   end
 
   create_table "wallet_transactions", force: :cascade do |t|
+    t.string "transaction_id", null: false
     t.integer "sender_id", null: false
     t.integer "beneficiary_id", null: false
     t.integer "wallet_from"
-    t.integer "wallet_to", null: false
+    t.integer "wallet_to"
     t.integer "sum", null: false
-    t.string "transaction_id", null: false
-    t.string "method", null: false
+    t.string "charge_method", null: false
     t.string "type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "transaction_state"
     t.index ["beneficiary_id"], name: "index_wallet_transactions_on_beneficiary_id"
     t.index ["sender_id"], name: "index_wallet_transactions_on_sender_id"
     t.index ["wallet_from"], name: "index_wallet_transactions_on_wallet_from"
@@ -51,10 +67,11 @@ ActiveRecord::Schema.define(version: 2018_08_01_043855) do
   end
 
   create_table "wallets", force: :cascade do |t|
-    t.bigint "account_id"
     t.string "wallet_number", null: false
-    t.string "currency", default: "USD", null: false
     t.integer "amount", default: 0
+    t.string "currency", default: "USD", null: false
+    t.bigint "account_id"
+    t.integer "blocked_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id", "currency"], name: "index_wallets_on_account_id_and_currency", unique: true
@@ -63,6 +80,8 @@ ActiveRecord::Schema.define(version: 2018_08_01_043855) do
   end
 
   add_foreign_key "accounts", "users", on_delete: :cascade
+  add_foreign_key "wallet_transactions", "users", column: "beneficiary_id"
+  add_foreign_key "wallet_transactions", "users", column: "sender_id"
   add_foreign_key "wallet_transactions", "wallets", column: "wallet_from", on_delete: :cascade
   add_foreign_key "wallet_transactions", "wallets", column: "wallet_to", on_delete: :cascade
   add_foreign_key "wallets", "accounts", on_delete: :cascade

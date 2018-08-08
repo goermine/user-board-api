@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :transfer do
-    
+  factory :internal_transfer do
+
   end
 end

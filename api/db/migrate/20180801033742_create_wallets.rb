@@ -1,10 +1,11 @@
 class CreateWallets < ActiveRecord::Migration[5.2]
   def change
     create_table :wallets do |t|
-      t.references :account
       t.string :wallet_number, null: false, unique: true
-      t.string :currency, null: false, default: "USD"
       t.integer :amount, default: 0
+      t.string :currency, null: false, default: "USD"
+      t.references :account
+      t.integer :blocked_amount
       t.timestamps
     end
     add_index :wallets, [:account_id, :currency], unique: true

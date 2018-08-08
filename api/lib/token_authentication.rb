@@ -1,8 +1,6 @@
 class TokenAuthentication
   class Invalid < StandardError; end
   class Expired < StandardError; end
-
-
   class << self
     EXPERIRATION_TIME = ENV['TOKEN_EXPIRATION_MINUTES'].to_i
     ALGORITHM = 'HS512'.freeze

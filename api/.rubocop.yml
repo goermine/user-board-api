@@ -33,4 +33,7 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 
 Layout/AlignHash:
-  Enable: false 
+  Enable: false
+
+Style/MultilineBlockChain:
+  Enable: false
