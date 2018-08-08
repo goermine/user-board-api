@@ -3,8 +3,11 @@ class Wallet < ApplicationRecord
   has_many :wallet_transactions
   validates :currency, inclusion: { in: %w[USD EUR GBR] }, if: :currency
   validate :validate_uniq_currency_for_account
+  validates :wallet_number, presence: true
 
-  before_create :assign_wallet_number
+  before_validation(on: :create) do 
+    assign_wallet_number
+  end
 
   def block_funds(sum)
     increment!(:blocked_amount, sum)

@@ -3,9 +3,6 @@ class WalletTransactionsController < ApplicationController
     render json: WalletTransaction.all, status: 200
   end
 
-  # def show
-  # end
-
   def deposit
     deposit_params = params.require(:transaction).
       permit(:wallet_to, :sum, :charge_method)

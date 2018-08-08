@@ -10,7 +10,7 @@ class WalletTransaction < ApplicationRecord
   belongs_to :sender, class_name: 'User'
   belongs_to :beneficiary, class_name: 'User'
 
-  validates :sum, :charge_method, :type, presence: true
+  validates :sum, :transaction_id, :charge_method, :type, presence: true
   validates :charge_method, inclusion: {
     in: [*CHARGES_METHODS, *CHARGES_METHODS.map(&:upcase), *CHARGES_METHODS.map(&:capitalize)],
     message: '%{value} is not a method of transaction'
@@ -18,8 +18,10 @@ class WalletTransaction < ApplicationRecord
   validates :sum, numericality: { greater_than: 0 }
   validate :wallet_amount, if: :not_deposit?
   validate :transfer_between_own_wallets, if: :internal_type?
-
-  before_create :assign_transaction_id
+  
+  before_validation(on: :create) do 
+    assign_transaction_id
+  end
 
   private
 

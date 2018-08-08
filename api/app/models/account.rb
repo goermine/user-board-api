@@ -2,9 +2,12 @@ class Account < ApplicationRecord
   belongs_to :user
   has_many :wallets
   has_many :account_transactions, through: :wallets, class_name: 'WalletTransaction'
+  validates :account_number, presence: true 
   validates :user, uniqueness: true
 
-  before_create :assign_account_number
+  before_validation(on: :create) do 
+     assign_account_number
+  end
 
   private
 
